@@ -1,34 +1,59 @@
-can-monitor-1-rust
-==================
+# Canning Machine - Can Sensor 1 V1
+  
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)]
 
-Rust project for the _Arduino Nano New Bootloader_.
+  
+  ## Description 
+  
+  This program is meant to run on an arduino nano with proximity sensors to detect if a 12 oz can is on it's side or upright. Sounds alarm if sideways.
+  
+  ## Table of Contents
 
-## Build Instructions
-1. Install prerequisites as described in the [`avr-hal` README] (`avr-gcc`, `avr-libc`, `avrdude`, [`ravedude`]).
+  ⋆[Installation](#Installation)
+  ⋆[Usage](#Usage)
+  ⋆[Credits](#Credits)
+  ⋆[License](#License)
+  ⋆[Features](#Features)
+  ⋆[Contributions](#Contributions)
+  ⋆[Test](#Contributions)
 
-2. Run `cargo build` to build the firmware.
+  ## Installation 
 
-3. Run `cargo run` to flash the firmware to a connected board.  If `ravedude`
-   fails to detect your board, check its documentation at
-   <https://crates.io/crates/ravedude>.
+  
 
-4. `ravedude` will open a console session after flashing where you can interact
-   with the UART console of your board.
+  ## Usage
 
-[`avr-hal` README]: https://github.com/Rahix/avr-hal#readme
-[`ravedude`]: https://crates.io/crates/ravedude
+  
 
-## License
-Licensed under either of
+  ## Credits 
 
- - Apache License, Version 2.0
-   ([LICENSE-APACHE](LICENSE-APACHE) or <http://www.apache.org/licenses/LICENSE-2.0>)
- - MIT license
-   ([LICENSE-MIT](LICENSE-MIT) or <http://opensource.org/licenses/MIT>)
+  
 
-at your option.
+  ## License
 
-## Contribution
-Unless you explicitly state otherwise, any contribution intentionally submitted
-for inclusion in the work by you, as defined in the Apache-2.0 license, shall
-be dual licensed as above, without any additional terms or conditions.
+  (https://opensource.org/licenses/MIT)  
+
+  ## Features
+
+  - 
+
+  ## Technologies
+
+  - 
+
+  ## Contributions
+
+  
+
+  ## Test
+
+  
+
+  ## Questions
+
+  If you have any questions about the project you can reach out to me via email or GitHub with the information below. 
+
+  >Email: brahmvanh@gmail.com
+
+  >GitHub: [brahmvanh](https://github.com/brahmvanh)
+  
