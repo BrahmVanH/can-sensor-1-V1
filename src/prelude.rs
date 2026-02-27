@@ -1,6 +1,6 @@
 pub use arduino_hal::prelude::*;
-pub use panic_halt as _;
 pub use ufmt::uwriteln;
+pub use panic_halt as _;
 
 pub use crate::log::{ Event, log_event };
 pub use arduino_hal::port::{ Pin, PinOps, mode::{ Floating, Input, Output, PullUp } };

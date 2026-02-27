@@ -13,9 +13,6 @@ use crate::{
 // Solid blue 24awg wire - ground to sensors
 // Alarm out - a4 - to 12v powered board
 
-/// Original run program without button-LED blink feedback.
-/// The toggle switch pin (d8) is a plain pull-up input; the LED stays solid on
-/// at all times (illuminated button is always lit when powered).
 pub fn run_program_legacy() -> ! {
     let dp = get_peripherals();
     let pins = arduino_hal::pins!(dp);
@@ -46,7 +43,6 @@ pub fn run_program_legacy() -> ! {
     uwriteln!(&mut serial, "Commands: p=pause, r=resume, d=dump logs").ok();
 
     loop {
-        // Check for serial commands (non-blocking)
         if let Ok(byte) = serial.read() {
             uwriteln!(&mut serial, "rx: {}", byte).ok();
             match byte {
@@ -115,17 +111,6 @@ pub fn run_program_legacy() -> ! {
         }
 
         if alarm_state.is_playing {
-            // play_alarm_chunk(
-            //     &mut buzzer_1,
-            //     &mut buzzer_2,
-            //     &mut buzzer_3,
-            //     &mut buzzer_4,
-            //     &mut buzzer_5,
-            //     &mut buzzer_6,
-            //     &mut buzzer_7,
-            //     &mut alarm_state
-            // );
-            // alarm_smoke_siren(&mut buzzer_7);
             alarm_passive_buzzer_sweet_spot(&mut buzzer_7);
         }
 

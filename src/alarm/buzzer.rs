@@ -34,8 +34,8 @@ pub fn alarm_siren(buzzer: &mut impl OutputPin) {
 }
 
 pub fn alarm_passive_buzzer_sweet_spot(buzzer: &mut impl OutputPin) {
-    let half_period: u32 = 1_000_000 / 2000 / 2; // 250us → 2000 Hz
-    let cycles_per_blast: u32 = 2000 / 2; // 0.5s worth of cycles (1000)
+    let half_period: u32 = 1_000_000 / 2000 / 2;
+    let cycles_per_blast: u32 = 2000 / 2;
 
     for _repeat in 0..2 {
         for _blast in 0..3 {
@@ -52,8 +52,8 @@ pub fn alarm_passive_buzzer_sweet_spot(buzzer: &mut impl OutputPin) {
 }
 
 pub fn alarm_smoke_siren(buzzer: &mut impl OutputPin) {
-    let half_period: u32 = 1_000_000 / 3400 / 2; // ~147us → 3400 Hz
-    let cycles_per_blast: u32 = 3400 / 2; // 0.5s worth of cycles (1700)
+    let half_period: u32 = 1_000_000 / 3400 / 2;
+    let cycles_per_blast: u32 = 3400 / 2;
 
     for _repeat in 0..2 {
         for _blast in 0..3 {
@@ -70,7 +70,7 @@ pub fn alarm_smoke_siren(buzzer: &mut impl OutputPin) {
 }
 
 pub fn health_check_beep(buzzer: &mut impl OutputPin) {
-    let half_period: u32 = 1_000_000 / 2200 / 2; // ~227us
+    let half_period: u32 = 1_000_000 / 2200 / 2;
     for _ in 0..220 {
         let _ = buzzer.set_high();
         arduino_hal::delay_us(half_period);
@@ -81,7 +81,7 @@ pub fn health_check_beep(buzzer: &mut impl OutputPin) {
 }
 
 pub fn health_check_double_beep(buzzer: &mut impl OutputPin) {
-    let half_period: u32 = 1_000_000 / 2200 / 2; // ~227us
+    let half_period: u32 = 1_000_000 / 2200 / 2;
     for _ in 0..2 {
         for _ in 0..110 {
             let _ = buzzer.set_high();

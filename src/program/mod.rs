@@ -3,7 +3,16 @@ pub mod legacy;
 use crate::{
     alarm::*,
     hardware::{ get_peripherals, get_pin_input_device, get_pin_output_device },
-    log::{ Event, UPTIME_MS, dump_logs, log_event },
+    log::{
+        Event,
+        UPTIME_MS,
+        dump_logs,
+        log_event,
+        eeprom_init,
+        eeprom_log_event,
+        eeprom_dump_logs,
+        eeprom_clear_logs,
+    },
     prelude::*,
     sensor::SensorHealth,
 };
@@ -32,21 +41,29 @@ pub fn run_program() -> ! {
     // current hardware configuration is 4 12085 passive buzzer modules
     let mut buzzer = get_pin_output_device(pins.a4);
 
+    // log storage
+    let eeprom = dp.EEPROM;
+    eeprom_init(&eeprom);
+
     health_check_beep(&mut buzzer);
 
     log_event(Event::Startup);
+    eeprom_log_event(&eeprom, Event::Startup);
 
     let mut alarm_count: u8 = 0;
 
     const ALARM_THRESHOLD: u8 = 10;
 
-    let mut health = SensorHealth::new();
+    // let mut health = SensorHealth::new();
     let mut loop_count: u32 = 0;
 
     let mut alarm_state = AlarmState::new();
     let mut paused = false;
 
-    uwriteln!(&mut serial, "Commands: p=pause, r=resume, d=dump logs").ok();
+    uwriteln!(
+        &mut serial,
+        "Commands: p=pause, r=resume, d=dump ram, e=dump eeprom, c=clear eeprom"
+    ).ok();
 
     let mut running = false;
     let mut last_button_state = true;
@@ -73,8 +90,10 @@ pub fn run_program() -> ! {
                 blink_counter = 0;
                 if running {
                     log_event(Event::Resumed);
+                    eeprom_log_event(&eeprom, Event::Resumed);
                 } else {
                     log_event(Event::Paused);
+                    eeprom_log_event(&eeprom, Event::Paused);
                 }
             }
         }
@@ -122,6 +141,13 @@ pub fn run_program() -> ! {
                 b'd' | b'D' => {
                     dump_logs(&mut serial);
                 }
+                b'e' | b'E' => {
+                    eeprom_dump_logs(&eeprom, &mut serial);
+                }
+                b'c' | b'C' => {
+                    eeprom_clear_logs(&eeprom);
+                    uwriteln!(&mut serial, "EEPROM log cleared.").ok();
+                }
                 _ => {}
             }
         }
@@ -137,18 +163,19 @@ pub fn run_program() -> ! {
         let top = sensor_top.is_low();
         let bottom = sensor_bottom.is_low();
 
-        let sensors_healthy = health.check(top, bottom);
+        // let sensors_healthy = health.check(top, bottom);
 
-        if !sensors_healthy {
-            health_check_double_beep(&mut buzzer);
-            dump_logs(&mut serial);
-        }
+        // if !sensors_healthy {
+        //     health_check_double_beep(&mut buzzer);
+        //     dump_logs(&mut serial);
+        // }
 
         if bottom && !top {
             alarm_count = alarm_count.saturating_add(1);
 
             if alarm_count >= ALARM_THRESHOLD && !alarm_state.is_playing {
                 log_event(Event::AlarmTriggered);
+                eeprom_log_event(&eeprom, Event::AlarmTriggered);
                 alarm_state.is_playing = true;
                 alarm_state.phase = 0;
                 alarm_state.step = 0;
@@ -157,6 +184,7 @@ pub fn run_program() -> ! {
             alarm_count = 0;
             if alarm_state.is_playing {
                 log_event(Event::AlarmCleared);
+                eeprom_log_event(&eeprom, Event::AlarmCleared);
                 alarm_state.reset();
                 let _ = buzzer.set_low();
             }
