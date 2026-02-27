@@ -1,6 +1,7 @@
 [general]
 board = "nano-new"
 open-console = true
+output-mode = "ascii"
 serial-baudrate = 57600
 port = "COM8"
 
